@@ -494,26 +494,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Aetherion
-            id: aetherion
-            rtp: None
-            xp: false
-          - name: Crysalis
-            id: crysalis
-            rtp: RPGVXAce
-            xp: false
-          - name: 'KNight-Blade: Howling of Kerberos'
-            id: knight-blade-howling-of-kerberos
-            rtp: Standard
-            xp: true
-          - name: Pokémon Infinity
-            id: pokemon-infinity
-            rtp: None
-            xp: true
-          - name: Star Stealing Prince
-            id: star-stealing-prince
-            rtp: None
-            xp: false
           - name: G.S. Protocol
             id: gs-protocol
             rtp: None
@@ -521,14 +501,6 @@ jobs:
     needs:
       - check-nostalgist
       - build-frontend
-      - download-rpg-maker-xp-rtp
-      - download-rpg-maker-vx-rtp
-      - download-rpg-maker-vx-ace-rtp
-      - download-aetherion
-      - download-crysalis
-      - download-knight-blade-howling-of-kerberos
-      - download-pokemon-infinity
-      - download-star-stealing-prince
       - download-gs-protocol
     name: Build Nostalgist.js with ${{ matrix.name }}
     runs-on: ubuntu-slim
@@ -618,36 +590,6 @@ jobs:
           name: mkxp-z_libretro_retroarch_web_player
           path: dist/retroarch-web-player
 
-      - name: Download Nostalgist.js with Aetherion
-        uses: actions/download-artifact@v5
-        with:
-          name: mkxp-z_libretro_nostalgist_aetherion
-          path: dist/nostalgist-aetherion
-
-      - name: Download Nostalgist.js with Crysalis
-        uses: actions/download-artifact@v5
-        with:
-          name: mkxp-z_libretro_nostalgist_crysalis
-          path: dist/nostalgist-crysalis
-
-      - name: 'Download Nostalgist.js with KNight-Blade: Howling of Kerberos'
-        uses: actions/download-artifact@v5
-        with:
-          name: mkxp-z_libretro_nostalgist_knight-blade-howling-of-kerberos
-          path: dist/nostalgist-knight-blade-howling-of-kerberos
-
-      - name: Download Nostalgist.js with Pokémon Infinity
-        uses: actions/download-artifact@v5
-        with:
-          name: mkxp-z_libretro_nostalgist_pokemon-infinity
-          path: dist/nostalgist-pokemon-infinity
-
-      - name: Download Nostalgist.js with Star Stealing Prince
-        uses: actions/download-artifact@v5
-        with:
-          name: mkxp-z_libretro_nostalgist_star-stealing-prince
-          path: dist/nostalgist-star-stealing-prince
-
       - name: Download Nostalgist.js with G.S. Protocol
         uses: actions/download-artifact@v5
         with:
@@ -668,6 +610,9 @@ jobs:
       group: pages
       cancel-in-progress: false
     runs-on: ubuntu-slim
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
