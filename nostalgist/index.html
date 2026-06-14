@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en" style="height: 100%">
   <head>
+    <script src="/coi-serviceworker.js"></script>
+    <script>
+      // Send a dummy message every 5 seconds to prevent coi-serviceworker.js from being killed by Firefox for taking too long to fetch large files
+      if (navigator.serviceWorker.controller !== null) {
+        setInterval(() => {
+          navigator.serviceWorker.controller.postMessage({ type: "heartbeat" });
+        }, 5000);
+      }
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,15 +31,6 @@
       background-color: #000;
     "
   >
-    <script src="/coi-serviceworker.js"></script>
-    <script>
-      // Send a dummy message every 5 seconds to prevent coi-serviceworker.js from being killed by Firefox for taking too long to fetch large files
-      if (navigator.serviceWorker.controller !== null) {
-        setInterval(() => {
-          navigator.serviceWorker.controller.postMessage({ type: "heartbeat" });
-        }, 5000);
-      }
-    </script>
     <div
       id="spinner-target"
       style="
