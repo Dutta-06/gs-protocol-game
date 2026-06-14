@@ -295,6 +295,24 @@ jobs:
           name: star-stealing-prince.mkxpz
           path: star-stealing-prince.mkxpz
 
+  download-gs-protocol:
+    name: Download G.S. Protocol
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - name: Rename game file
+        run: cp nostalgist/public/game.mkxpz gs-protocol.mkxpz
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gs-protocol.mkxpz
+          path: gs-protocol.mkxpz
+
   build-stage1:
     name: Build stage 1
     runs-on: ubuntu-latest
@@ -496,6 +514,10 @@ jobs:
             id: star-stealing-prince
             rtp: None
             xp: false
+          - name: G.S. Protocol
+            id: gs-protocol
+            rtp: None
+            xp: true
     needs:
       - check-nostalgist
       - build-frontend
@@ -507,6 +529,7 @@ jobs:
       - download-knight-blade-howling-of-kerberos
       - download-pokemon-infinity
       - download-star-stealing-prince
+      - download-gs-protocol
     name: Build Nostalgist.js with ${{ matrix.name }}
     runs-on: ubuntu-slim
     steps:
@@ -624,6 +647,12 @@ jobs:
         with:
           name: mkxp-z_libretro_nostalgist_star-stealing-prince
           path: dist/nostalgist-star-stealing-prince
+
+      - name: Download Nostalgist.js with G.S. Protocol
+        uses: actions/download-artifact@v5
+        with:
+          name: mkxp-z_libretro_nostalgist_gs-protocol
+          path: dist/nostalgist-gs-protocol
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
